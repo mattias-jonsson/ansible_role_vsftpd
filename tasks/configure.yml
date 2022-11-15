@@ -1,0 +1,68 @@
+---
+
+- name: create combined config_options by combine user supplied vars with default vars
+  set_fact:
+    ansible_role_vsftpd_combined_config_options: "{{ ansible_role_vsftpd_default_options | combine(ansible_role_vsftpd_os_defaults_options,ansible_role_vsftpd_options) }}"
+
+- name: create ftp_users list
+  set_fact:
+    ansible_role_vsftpd_ftpusers_list: "{{ ansible_role_vsftpd_ftpusers if ansible_role_vsftpd_ftpusers | length > 0 else ansible_role_vsftpd_os_defaults_ftpusers }}"    
+
+- name: create ansible_role_vsftpd_default_user_list list
+  set_fact:
+    ansible_role_vsftpd_user_list: "{{ ansible_role_vsftpd_user_list if ansible_role_vsftpd_user_list | length > 0 else ansible_role_vsftpd_os_defaults_user_list }}"    
+
+- name: create vsftpd.conf from template
+  become: true
+  template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd/vsftpd.conf
+    owner: root
+    group: root
+    mode: 0600
+    backup: yes
+  notify: restart vsftpd
+
+- name: create email_passwords from template
+  become: true
+  template:
+    src: vsftpd_email_passwords.j2
+    dest: /etc/vsftpd/email_passwords
+    owner: root
+    group: root
+    mode: 0600
+    backup: yes
+  notify: restart vsftpd
+
+- name: create ftpusers from template
+  become: true
+  template:
+    src: vsftpd_ftpusers.j2
+    dest: /etc/vsftpd/ftpusers
+    owner: root
+    group: root
+    mode: 0600
+    backup: yes
+  notify: restart vsftpd
+
+- name: create user_list from template
+  become: true
+  template:
+    src: vsftpd_user_list.j2
+    dest: /etc/vsftpd/user_list
+    owner: root
+    group: root
+    mode: 0600
+    backup: yes
+  notify: restart vsftpd
+
+- name: create banned_emails from template
+  become: true
+  template:
+    src: vsftpd_banned_emails.j2
+    dest: /etc/vsftpd/banned_emails
+    owner: root
+    group: root
+    mode: 0600
+    backup: yes
+  notify: restart vsftpd

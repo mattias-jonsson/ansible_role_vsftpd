@@ -1,0 +1,8 @@
+---
+
+- name: install packages
+  become: true
+  yum:
+    name: "{{ ansible_role_vsftpd_packages }}"
+    state: present
+    update_cache: yes

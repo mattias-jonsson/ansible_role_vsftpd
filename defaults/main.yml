@@ -1,0 +1,7 @@
+---
+
+ansible_role_vsftpd_email_passwords: []
+ansible_role_vsftpd_user_list: []
+ansible_role_vsftpd_banned_emails: []
+ansible_role_vsftpd_options: []
+ansible_role_vsftpd_ftpusers: []
